@@ -1,5 +1,8 @@
 package com.example.mylogintestproject
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,16 +17,20 @@ class MainViewModel : ViewModel() {
     private val _loginResponse = MutableLiveData<LoginResponse>()
     val loginResponse : LiveData<LoginResponse> = _loginResponse
 
-    var loginSuccess = ""
+    var loginResult by mutableStateOf("")
 
     fun login(email: String, password: String){
         viewModelScope.launch {
             try {
                 _loginResponse.value = LoginApi.retrofitService.login(LoginRequest(email, password))
-                loginSuccess = "Welcome ${_loginResponse.value?.title} ${_loginResponse.value?.lastName}"
+                updateLoginResult("Welcome ${_loginResponse.value?.title} ${_loginResponse.value?.lastName}")
             } catch (e : Exception){
-                loginSuccess = "Login Failed : ${e.message}"
+                updateLoginResult( "Login Failed : ${e.message}")
             }
         }
+    }
+
+    fun updateLoginResult(result: String){
+        loginResult = result
     }
 }

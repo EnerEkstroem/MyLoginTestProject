@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    screenBuilder(viewModel)
+                    ScreenBuilder(viewModel)
                 }
             }
         }
@@ -41,11 +41,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun screenBuilder( viewModel: MainViewModel){
+fun ScreenBuilder( viewModel: MainViewModel){
     var email by rememberSaveable{ mutableStateOf("")}
     var password by rememberSaveable { mutableStateOf("")}
 
-    Scaffold(topBar = { loginTestTopBar() }) {
+    Scaffold(topBar = { LoginTestTopBar() }) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -62,7 +62,7 @@ fun screenBuilder( viewModel: MainViewModel){
                 value = password,
                 label = { Text(text = "Password") },
                 placeholder = { Text(text = "enter your password") },
-                //visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 onValueChange = {password = it}
             )
@@ -70,7 +70,7 @@ fun screenBuilder( viewModel: MainViewModel){
                 Text(text = "Login")
             }
             Text(
-                text = viewModel.loginSuccess
+                text = viewModel.loginResult
             )
 
         }
@@ -78,7 +78,7 @@ fun screenBuilder( viewModel: MainViewModel){
 }
 
 @Composable
-fun loginTestTopBar(){
+fun LoginTestTopBar(){
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
